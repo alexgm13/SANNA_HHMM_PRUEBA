@@ -2127,10 +2127,6 @@ namespace HHMM.AppWeb.Controllers
         }
         private bool IsFileNameValid(string filename)
         {
-            if (String.IsNullOrEmpty(filename))
-            {
-                return false;
-            }
             if (filename.Contains("..") || filename.Contains("/") || filename.Contains("\\"))
             {
                 return false;
