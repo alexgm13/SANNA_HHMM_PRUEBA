@@ -353,12 +353,13 @@ namespace HHMM.AppWeb.Controllers
         private SearchResult IsAuthenticated(string root, string domainName, string userName, string password)
         {
 
-            string domainAndUsername = domainName + "\\" + userName;
+            string sanitizedUser = EscapeLdapSearchFilter(userName);
+            string domainAndUsername = domainName + "\\" + sanitizedUser;
             DirectoryEntry entry = new DirectoryEntry(root, domainAndUsername, password);
 
             object obj = entry.NativeObject;
             DirectorySearcher search = new DirectorySearcher(entry);
-            search.Filter = "(SAMAccountName=" + userName + ")";
+            search.Filter = "(SAMAccountName=" + sanitizedUser + ")";
             search.PropertiesToLoad.Add("cn");
             search.PropertiesToLoad.Add("sAMAccountName");
             search.PropertiesToLoad.Add("givenName");
