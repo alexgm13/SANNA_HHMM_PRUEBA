@@ -353,13 +353,15 @@ namespace HHMM.AppWeb.Controllers
         private SearchResult IsAuthenticated(string root, string domainName, string userName, string password)
         {
 
-            string sanitizedUser = EscapeLdapSearchFilter(userName);
-            string domainAndUsername = domainName + "\\" + sanitizedUser;
+            string domainAndUsername = domainName + "\\" + userName;
             DirectoryEntry entry = new DirectoryEntry(root, domainAndUsername, password);
 
             object obj = entry.NativeObject;
+
+            string safeUser = Encoder.LdapFilterEncode(userName);
+
             DirectorySearcher search = new DirectorySearcher(entry);
-            search.Filter = "(SAMAccountName=" + sanitizedUser + ")";
+            search.Filter = "(SAMAccountName=" + safeUser + ")";
             search.PropertiesToLoad.Add("cn");
             search.PropertiesToLoad.Add("sAMAccountName");
             search.PropertiesToLoad.Add("givenName");
@@ -377,18 +379,6 @@ namespace HHMM.AppWeb.Controllers
             string tmp = ConfigurationManager.AppSettings["ListaCompanias"];
             string rpta = !string.IsNullOrEmpty(tmp) ? tmp : "";
             return rpta;
-        }
-
-        private static string EscapeLdapSearchFilter(string filter)
-        {
-            if (string.IsNullOrEmpty(filter)) return filter;
-
-            return filter
-                .Replace("\\", "\\5c")
-                .Replace("*", "\\2a")
-                .Replace("(", "\\28")
-                .Replace(")", "\\29")
-                .Replace("\0", "\\00");
         }
     }
 }
