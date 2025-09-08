@@ -275,7 +275,6 @@
     <Content Include="Scripts\ValidacionCuentasContables.js" />
     <Content Include="Scripts\xlscreateworker.js" />
     <Content Include="Scripts\xlsx.full.min.js" />
-    <Content Include="Scripts\xlsx.js" />
     <Content Include="Scripts\xlsxworker.js" />
     <Content Include="Styles\BandejaCorreoListar.css" />
     <Content Include="Styles\ContratoPorVencer.css" />
